@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "homework",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottjr101/bamazon.git"
+  },
+  "author": "Scott Ladd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scottjr101/bamazon/issues"
+  },
+  "homepage": "https://github.com/scottjr101/bamazon#readme",
+  "dependencies": {
+    "easy-table": "^1.1.1",
+    "mysql": "^2.17.1"
+  }
+}
