@@ -23,6 +23,9 @@ function validateInput(value) {
 
 function askUser() {
 
+    pool.getConnection(function(err, connection) {
+        if (err) throw err; // not connected!
+
     inquirer.prompt([
     {
         type: 'input',
@@ -44,32 +47,25 @@ function askUser() {
         var quantity = input.quantity;
         var queryStr = 'SELECT * FROM bamazon.products WHERE ?';
 
-        pool.query(queryStr, {id: item}, function(err, data) {
+        connection.query(queryStr, {id: item}, function(err, data) {
 			if (err) throw err;
-
-			// If the user has selected an invalid item ID, data attay will be empty
-			// console.log('data = ' + JSON.stringify(data));
 
 			if (data === 0) {
 				console.log('ERROR: Invalid Item ID. Please select a valid ID.');
 				Inventory();
 
 			} else {
-				var productData = data[0];
-
-				// console.log('productData = ' + JSON.stringify(productData));
-				// console.log('productData.stock_quantity = ' + productData.stock_quantity);
-
+                var productData = data[0];
+                
 				// If the quantity requested by the user is in stock
 				if (quantity <= productData.stock_quantity) {
-					console.log('Congratulations, the product you requested is in stock! Placing order!');
+					console.log('\nCongratulations, the product you requested is in stock! Placing order!');
 
 					// Construct the updating query string
 					var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (productData.stock_quantity - quantity) + ' WHERE id = ' + item;
-					// console.log('updateQueryStr = ' + updateQueryStr);
 
 					// Update the inventory
-					pool.query(updateQueryStr, function(err, data) {
+					connection.query(updateQueryStr, function(err, data) {
 						if (err) throw err;
 
 						console.log("\nYour order has been placed! Your total is $" + productData.price * quantity);
@@ -77,7 +73,8 @@ function askUser() {
 						console.log("\n---------------------------------------------------------------------\n");
 
 						// End the database connection
-						connection.release();
+                        connection.release();
+                        if (err) throw error;
 					})
 				} else {
 					console.log('\nInsufficient quantity!');
@@ -89,7 +86,7 @@ function askUser() {
 			}
 		})
     });
-
+  });
 };
 
 function Inventory() {
@@ -109,6 +106,10 @@ pool.getConnection(function (err, connection) {
             t.newRow()
         })
         console.log(t.toString());
+        
+        connection.release();
+        if (err) throw error;
+
         askUser();
     });
  });
