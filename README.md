@@ -27,13 +27,13 @@ Bamazon is a Amazon-like storefront that connects to the MySQL Workbench program
 
     See screen-shot below:
 
-    ![Results](screenshots/success.png)
+    ![Results](Screenshots/success.png)
 
     **Example 2**: This example shows that there is not enough inventory to complete the order and the user should modify their order.
     
     See screen-shot below:
 
-    ![Results](screenshots/failure.png)
+    ![Results](Screenshots/failure.png)
 
 - - -
 
